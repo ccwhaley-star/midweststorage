@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <!-- Stacked diamond/layers logo for Midwest Storage Solutions -->
+  <g stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Bottom layer -->
+    <path d="M24 38 L6 28 L24 18 L42 28 Z" opacity="0.4"/>
+    <!-- Middle layer -->
+    <path d="M24 32 L6 22 L24 12 L42 22 Z" opacity="0.6"/>
+    <!-- Top layer -->
+    <path d="M24 26 L6 16 L24 6 L42 16 Z" opacity="1"/>
+  </g>
+</svg>

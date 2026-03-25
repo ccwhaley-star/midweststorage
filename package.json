@@ -1,0 +1,9 @@
+{
+  "name": "midwest-storage-solutions",
+  "version": "1.0.0",
+  "description": "Midwest Storage Solutions - Technology driven property management for self storage and flex space",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  }
+}
