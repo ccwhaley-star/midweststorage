@@ -30,28 +30,42 @@
     });
   }
 
-  // FAQ Accordion
-  document.querySelectorAll('.faq-question').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var item = this.parentElement;
-      var answer = item.querySelector('.faq-answer');
-      var isActive = item.classList.contains('active');
+  // Stats Count-up Animation
+  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var statNumbers = document.querySelectorAll('.stat-number');
 
-      // Close all
-      document.querySelectorAll('.faq-item').forEach(function(el) {
-        el.classList.remove('active');
-        el.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
-        el.querySelector('.faq-answer').style.maxHeight = null;
+  if (!prefersReducedMotion) {
+    var statsObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var el = entry.target;
+          var text = el.textContent.trim();
+          var match = text.match(/^([\d.]+)(.*)$/);
+          if (!match) return;
+          var target = parseFloat(match[1]);
+          var suffix = match[2];
+          var hasDecimal = match[1].indexOf('.') !== -1;
+          var decimalPlaces = hasDecimal ? (match[1].split('.')[1] || '').length : 0;
+          var duration = 1500;
+          var startTime = null;
+
+          function animate(ts) {
+            if (!startTime) startTime = ts;
+            var progress = Math.min((ts - startTime) / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            var current = eased * target;
+            el.textContent = (hasDecimal ? current.toFixed(decimalPlaces) : Math.floor(current)) + suffix;
+            if (progress < 1) requestAnimationFrame(animate);
+          }
+
+          requestAnimationFrame(animate);
+          statsObserver.unobserve(el);
+        }
       });
+    }, { threshold: 0.5 });
 
-      // Open clicked (if it was closed)
-      if (!isActive) {
-        item.classList.add('active');
-        this.setAttribute('aria-expanded', 'true');
-        answer.style.maxHeight = answer.scrollHeight + 'px';
-      }
-    });
-  });
+    statNumbers.forEach(function(el) { statsObserver.observe(el); });
+  }
 
   // Scroll Animations
   var observer = new IntersectionObserver(function(entries) {
