@@ -559,7 +559,7 @@ ul { list-style: none; }
 
 .stats-inner {
   display: grid;
-  grid-template-columns: 1fr repeat(4, auto);
+  grid-template-columns: 1fr repeat(3, auto);
   gap: 60px;
   align-items: center;
 }
