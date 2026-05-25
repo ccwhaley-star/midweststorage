@@ -1035,3 +1035,163 @@ ul { list-style: none; }
 .mission :focus-visible {
   outline-color: var(--white);
 }
+
+/* ============================================
+   Customer Experience / CX
+   ============================================ */
+.experience {
+  background: var(--dark);
+  position: relative;
+  overflow: hidden;
+  padding: 80px 0;
+}
+.experience::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 5%, rgba(212,129,58,0.3) 50%, transparent 95%);
+}
+.experience .section-label { color: var(--accent); border-color: var(--accent); }
+.experience-header-text h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+.experience-text {
+  font-size: 1rem;
+  color: var(--text-light);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+.experience-header {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 56px;
+  align-items: center;
+  margin-bottom: 64px;
+}
+.experience-header-text { max-width: 540px; }
+.experience-visual {
+  position: relative;
+  aspect-ratio: 600 / 540;
+  max-width: 520px;
+  margin: 0 auto;
+  width: 100%;
+}
+.experience-visual svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 24px 48px rgba(0,0,0,0.55));
+}
+
+/* AI sub-section */
+.experience-ai { margin-top: 8px; }
+.experience-ai-head { text-align: center; margin-bottom: 44px; }
+.experience-ai-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gray);
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.experience-ai-eyebrow::before,
+.experience-ai-eyebrow::after {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+.experience-ai-title {
+  font-weight: 700;
+  font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+  color: var(--white);
+  line-height: 1.2;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.experience-ai-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px 28px;
+}
+.experience-ai-item { text-align: center; position: relative; }
+.experience-ai-icon {
+  width: 46px;
+  height: 46px;
+  margin: 0 auto 18px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(212,129,58,0.4);
+  border-radius: 50%;
+  color: var(--accent);
+  background: rgba(212,129,58,0.06);
+}
+.experience-ai-icon svg { width: 22px; height: 22px; }
+.experience-ai-item h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 9px;
+  line-height: 1.3;
+}
+.experience-ai-item p {
+  font-size: 0.86rem;
+  color: var(--text-light);
+  opacity: 0.78;
+  line-height: 1.6;
+}
+
+.experience-metrics {
+  margin-top: 64px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+.experience-metric { position: relative; }
+.experience-metric:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -12px;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background: rgba(255,255,255,0.1);
+}
+.experience-metric-value {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px;
+  line-height: 1;
+}
+.experience-metric-label {
+  font-size: 0.76rem;
+  color: var(--gray);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+@media (max-width: 1024px) {
+  .experience-header { grid-template-columns: 1fr; gap: 40px; }
+  .experience-header-text { max-width: 100%; }
+  .experience-visual { max-width: 440px; }
+  .experience-ai-grid { grid-template-columns: 1fr 1fr; gap: 36px 24px; }
+}
+@media (max-width: 600px) {
+  .experience-ai-grid { grid-template-columns: 1fr; gap: 28px; }
+  .experience-metrics { grid-template-columns: repeat(2, 1fr); gap: 32px 16px; }
+  .experience-metric:not(:last-child)::after { display: none; }
+}
