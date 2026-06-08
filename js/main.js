@@ -7,18 +7,31 @@
   const toggle = document.querySelector('.nav-toggle');
   const navLinks = document.querySelector('.nav-links');
 
+  function closeMenu() {
+    navLinks.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('nav-open');
+  }
+
   if (toggle && navLinks) {
     toggle.addEventListener('click', function() {
       const expanded = this.getAttribute('aria-expanded') === 'true';
       this.setAttribute('aria-expanded', !expanded);
       navLinks.classList.toggle('open');
+      document.body.classList.toggle('nav-open');
     });
 
     navLinks.querySelectorAll('a').forEach(function(link) {
-      link.addEventListener('click', function() {
-        navLinks.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-      });
+      link.addEventListener('click', closeMenu);
+    });
+
+    // Close menu on outside tap
+    document.addEventListener('click', function(e) {
+      if (navLinks.classList.contains('open') &&
+          !toggle.contains(e.target) &&
+          !navLinks.contains(e.target)) {
+        closeMenu();
+      }
     });
   }
 

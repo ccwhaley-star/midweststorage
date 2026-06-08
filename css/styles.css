@@ -245,7 +245,7 @@ ul { list-style: none; }
   right: 0;
   bottom: 0;
   height: 40%;
-  background: linear-gradient(to bottom, transparent 0%, var(--dark-card) 100%);
+  background: linear-gradient(to bottom, transparent 0%, var(--dark) 100%);
   z-index: 2;
   pointer-events: none;
 }
