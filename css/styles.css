@@ -591,8 +591,9 @@ ul { list-style: none; }
 
 .stats-inner {
   display: grid;
-  grid-template-columns: 1fr repeat(4, auto);
+  grid-template-columns: repeat(4, 1fr);
   gap: 48px;
+  text-align: center;
   align-items: center;
 }
 
