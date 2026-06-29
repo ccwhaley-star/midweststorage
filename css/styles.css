@@ -1800,6 +1800,7 @@ body.nav-open {
   flex: 0 0 64px;
   border-radius: 50%;
   overflow: hidden;
+  background: #1f2227;
 }
 .team-photo {
   width: 100%;
