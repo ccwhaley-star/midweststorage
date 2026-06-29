@@ -1801,8 +1801,8 @@ body.nav-open {
   border-radius: 50%;
   object-fit: cover;
   object-position: center;
-  transform: scale(1.8);
-  clip-path: circle(50%);
+  transform: scale(2.2);
+  clip-path: circle(40%);
 }
 .mono-avatar {
   width: 64px;
