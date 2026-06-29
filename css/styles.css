@@ -1798,11 +1798,14 @@ body.nav-open {
   width: 64px;
   height: 64px;
   flex: 0 0 64px;
+  border-radius: 50%;
+  overflow: hidden;
 }
 .team-photo {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  transform: scale(1.1);
 }
 .mono-avatar {
   width: 64px;
