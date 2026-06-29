@@ -93,6 +93,21 @@
     observer.observe(el);
   });
 
+  // V3 Reveal Animations
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+  document.querySelectorAll('.reveal').forEach(function(el, i) {
+    el.style.transitionDelay = (Math.min(i % 3, 3) * 70) + 'ms';
+    revealObserver.observe(el);
+  });
+
   // Active nav link on scroll
   var sections = document.querySelectorAll('section[id]');
   var navAnchors = document.querySelectorAll('.nav-links a');
