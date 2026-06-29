@@ -1609,11 +1609,11 @@ body.nav-open {
   gap: 18px;
 }
 .asset-img {
-  width: calc(100% + 56px);
-  margin: -30px -28px 20px;
+  width: calc(100% + 58px);
+  margin: -31px -29px 20px;
   height: 200px;
   object-fit: cover;
-  border-radius: 4px 4px 0 0;
+  border-radius: 3px 3px 0 0;
   display: block;
 }
 .asset {
