@@ -1808,6 +1808,7 @@ body.nav-open {
   object-fit: cover;
   object-position: center;
   transform: scale(2);
+  mix-blend-mode: luminosity;
 }
 .mono-avatar {
   width: 64px;
