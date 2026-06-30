@@ -1994,9 +1994,10 @@ body.nav-open {
   .lime section,
   .close section { padding: 48px 0; }
   .wrap { padding: 0 20px; }
-  .assets, .matrix, .proof, .reviews { grid-template-columns: 1fr; }
+  .assets, .matrix, .reviews { grid-template-columns: 1fr; }
   .asset .desc { min-height: 0; }
   .telemetry { grid-template-columns: 1fr 1fr; }
+  .proof { grid-template-columns: 1fr 1fr; }
   .sec-head { margin-bottom: 36px; }
   .sec-head h2 br { display: none; }
   .close h2 br { display: none; }
