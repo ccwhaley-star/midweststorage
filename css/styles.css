@@ -1211,6 +1211,7 @@ body.nav-open {
 
   .hero {
     min-height: 500px;
+    background-position: 35% center;
   }
 
   .hero h1 {
