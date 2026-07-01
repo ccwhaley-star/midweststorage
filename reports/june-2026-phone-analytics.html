@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MSS — June Quo Phone Analytics</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1f2421; background: #f6f5f1; margin: 0; padding: 0; line-height: 1.6; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 32px 24px 64px; }
+  header { border-bottom: 2px solid #C8511B; padding-bottom: 16px; margin-bottom: 28px; }
+  h1 { font-size: 26px; margin: 0 0 4px; font-weight: 600; }
+  .sub { color: #6b6b66; font-size: 14px; }
+  h2 { font-size: 18px; margin: 36px 0 14px; font-weight: 600; color: #2c2c2a; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 14px; margin-bottom: 8px; }
+  .kpi { background: #fff; border: 1px solid #e6e4dc; border-radius: 12px; padding: 16px 18px; }
+  .kpi .label { font-size: 13px; color: #6b6b66; }
+  .kpi .val { font-size: 28px; font-weight: 600; margin-top: 2px; }
+  .kpi .note { font-size: 12px; color: #93938c; margin-top: 2px; }
+  .danger { color: #A32D2D; }
+  .card { background: #fff; border: 1px solid #e6e4dc; border-radius: 12px; padding: 20px 22px; margin-bottom: 18px; }
+  .chart-box { position: relative; width: 100%; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #eceae3; }
+  th { color: #6b6b66; font-weight: 600; font-size: 13px; }
+  td.num, th.num { text-align: right; }
+  .worst { color: #A32D2D; font-weight: 600; }
+  .best { color: #158463; font-weight: 600; }
+  ul { margin: 8px 0 0; padding-left: 20px; }
+  li { margin-bottom: 10px; }
+  .action { background: #fff7ef; border: 1px solid #f2d9be; border-radius: 12px; padding: 18px 22px; }
+  .action h2 { margin-top: 0; color: #9a4a15; }
+  .foot { color: #93938c; font-size: 12px; margin-top: 32px; border-top: 1px solid #e6e4dc; padding-top: 14px; }
+  strong { font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Phone &amp; Text Analytics — June 2026</h1>
+    <div class="sub">Midwest Storage Solutions · Quo call/message data · June 3 – July 1, 2026 (29 days)</div>
+  </header>
+
+  <div class="kpis">
+    <div class="kpi"><div class="label">Total contacts</div><div class="val">2,350</div><div class="note">calls + texts · ~81/day</div></div>
+    <div class="kpi"><div class="label">Call answer rate</div><div class="val">68%</div><div class="note">674 incoming calls</div></div>
+    <div class="kpi"><div class="label">Missed calls</div><div class="val danger">173</div><div class="note">142 in business hours</div></div>
+    <div class="kpi"><div class="label">Avg call length</div><div class="val">2.3 min</div><div class="note">answered calls</div></div>
+  </div>
+
+  <h2>Missed-call rate by facility</h2>
+  <div class="card">
+    <div class="chart-box" style="height: 300px;">
+      <canvas id="missChart" role="img" aria-label="Missed call rate by facility"></canvas>
+    </div>
+    <table style="margin-top:18px;">
+      <thead><tr><th>Facility</th><th class="num">Incoming calls</th><th class="num">Missed</th><th class="num">Miss rate</th></tr></thead>
+      <tbody>
+        <tr><td>Bourbon County</td><td class="num">59</td><td class="num">27</td><td class="num worst">46%</td></tr>
+        <tr><td>Reno County</td><td class="num">279</td><td class="num">86</td><td class="num">31%</td></tr>
+        <tr><td>SandHills</td><td class="num">95</td><td class="num">29</td><td class="num">31%</td></tr>
+        <tr><td>Midwest line</td><td class="num">20</td><td class="num">4</td><td class="num">20%</td></tr>
+        <tr><td>Labette County</td><td class="num">198</td><td class="num">27</td><td class="num best">14%</td></tr>
+        <tr><td>Old South Hutch</td><td class="num">22</td><td class="num">0</td><td class="num best">0%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>When the calls come in (Central time)</h2>
+  <div class="card">
+    <div class="chart-box" style="height: 260px;">
+      <canvas id="hourChart" role="img" aria-label="Incoming volume by hour of day"></canvas>
+    </div>
+    <p style="font-size:13px; color:#6b6b66; margin: 12px 0 0;">Busiest weekday is <strong>Monday</strong> (514 contacts vs. 184 on Sunday). The inbound window runs ~9 AM–4 PM, with surges around 9 and 11 AM.</p>
+  </div>
+
+  <h2>Where callers are located</h2>
+  <div class="card">
+    <table>
+      <thead><tr><th>Origin</th><th class="num">Incoming</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Kansas</td><td class="num">360</td><td>Local — expected</td></tr>
+        <tr><td>Arizona</td><td class="num">108</td><td class="worst">Spam texts to Reno line only — no real calls</td></tr>
+        <tr><td>Oklahoma / Colorado / S. Carolina / Washington / Missouri / Louisiana</td><td class="num">~90</td><td>Genuine out-of-state movers relocating to KS</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="action">
+    <h2>What this means — and what to do</h2>
+    <ul>
+      <li><strong>We missed 173 calls in June, and 142 of them were during business hours</strong> — about 5 lost calls every working day. At a storage business, a missed call is often a rental that goes somewhere else. This is the biggest opportunity in the data.</li>
+      <li><strong>Bourbon and Reno are where calls are slipping.</strong> Bourbon drops 46% of its calls (nearly half), and Reno loses the most in raw numbers (86). Labette, by contrast, only misses 14% — proof this is fixable with coverage, not a systemic problem. <strong>Action:</strong> add phone coverage or overflow routing for Bourbon and Reno during the 9 AM–4 PM window.</li>
+      <li><strong>Staff the peak.</strong> Mondays and the 9 AM–4 PM window are the heaviest — that's where our best coverage should sit, and it's exactly where the misses are happening.</li>
+      <li><strong>Block the Arizona spam.</strong> 108 Arizona texts hit the Reno line last month (all spam, zero real calls). Blocking that source cleans up the Reno inbox so real messages don't get buried.</li>
+      <li><strong>Out-of-state demand is real.</strong> ~90 genuine inbound contacts came from movers relocating to Kansas (Oklahoma, Colorado, the Carolinas, etc.) — the same profile as several June rentals. Worth keeping our "new to the area" pitch sharp.</li>
+    </ul>
+  </div>
+
+  <div class="foot">Source: Quo phone/text export, June 3 – July 1, 2026. "Missed" = incoming calls not answered or sent to voicemail. Once Cubby is live, this report can be generated automatically and combined with actual collections.</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+new Chart(document.getElementById('missChart'), {
+  type: 'bar',
+  data: { labels: ['Bourbon','Reno','SandHills','Midwest','Labette','Old S. Hutch'],
+    datasets: [{ data: [46,31,31,20,14,0],
+      backgroundColor: ['#A32D2D','#E24B4A','#E24B4A','#EF9F27','#158463','#158463'],
+      borderRadius: 4, barThickness: 24 }] },
+  options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display:false }, tooltip: { callbacks: { label: (c)=> c.parsed.x + '% missed' } } },
+    scales: { x: { min:0, max:50, ticks: { callback:(v)=>v+'%' }, grid: { color:'#eceae3' } },
+              y: { grid: { display:false } } } }
+});
+new Chart(document.getElementById('hourChart'), {
+  type: 'bar',
+  data: { labels: ['6a','7a','8a','9a','10a','11a','12p','1p','2p','3p','4p','5p','6p','7p','8p'],
+    datasets: [{ label:'Incoming', data: [6,22,55,149,126,152,105,128,135,131,129,70,44,22,17],
+      backgroundColor: '#C8511B', borderRadius: 3, barThickness: 20 }] },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display:false } },
+    scales: { x: { grid: { display:false } }, y: { grid: { color:'#eceae3' }, ticks:{ precision:0 } } } }
+});
+</script>
+</body>
+</html>
