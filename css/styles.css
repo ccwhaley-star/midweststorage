@@ -2018,3 +2018,56 @@ body.nav-open {
   }
   body::before { animation: none; }
 }
+
+/* ============================================
+   Live Console embed (Agentic Operations demo)
+   ============================================ */
+.console-frame {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #080a0f;
+  box-shadow: 0 40px 90px rgba(0,0,0,.5);
+}
+.console-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 15px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255,255,255,.02);
+}
+.cf-dot { width: 9px; height: 9px; border-radius: 50%; background: #3a3f46; flex: 0 0 auto; }
+.cf-label {
+  margin-left: 8px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--mute-2);
+}
+.cf-live {
+  margin-left: auto;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--signal);
+  display: flex; align-items: center; gap: 7px;
+}
+.cf-live b { width: 7px; height: 7px; border-radius: 50%; background: var(--signal); animation: cf-pulse 2s infinite; }
+@keyframes cf-pulse { 0%,100% { opacity: 1 } 50% { opacity: .3 } }
+.console-iframe {
+  display: block;
+  width: 100%;
+  height: min(80vh, 780px);
+  border: 0;
+  background: #080a0f;
+}
+.console-note {
+  margin-top: 16px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px; letter-spacing: .03em;
+  color: var(--mute-2);
+}
+.console-note a { color: var(--signal); text-decoration: none; }
+.console-note a:hover { text-decoration: underline; }
+@media (max-width: 720px) {
+  .console-iframe { height: 74vh; }
+}
