@@ -2053,10 +2053,14 @@ body.nav-open {
 }
 .cf-live b { width: 7px; height: 7px; border-radius: 50%; background: var(--signal); animation: cf-pulse 2s infinite; }
 @keyframes cf-pulse { 0%,100% { opacity: 1 } 50% { opacity: .3 } }
+/* the console is a full-screen dashboard — let this section break out of the
+   site's 1140px content width and give the iframe real height so it doesn't
+   render as a small cramped box */
+#console .wrap { max-width: min(1580px, 94vw); }
 .console-iframe {
   display: block;
   width: 100%;
-  height: min(80vh, 780px);
+  height: min(88vh, 900px);
   border: 0;
   background: #080a0f;
 }
