@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>MSS — Interface Concepts</title>
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:#05060a;color:#e9edf5;
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  :root{
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  }
+  canvas{display:block}
+
+  /* ---------- concept switcher ---------- */
+  .switch{position:fixed;z-index:50;left:50%;transform:translateX(-50%);bottom:18px;
+    display:flex;gap:2px;padding:5px;border-radius:999px;
+    background:rgba(10,12,18,.82);backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,.1)}
+  .switch a{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:rgba(233,237,245,.5);text-decoration:none;padding:8px 14px;border-radius:999px;transition:.18s;white-space:nowrap}
+  .switch a:hover{color:#fff;background:rgba(255,255,255,.07)}
+  .switch a.on{color:#05060a;background:#e9edf5}
+  @media(max-width:640px){.switch a{padding:7px 9px;font-size:9px;letter-spacing:.06em}}
+
+  /* ---------- shared section frame ---------- */
+  .sec{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+    padding:64px 40px 96px;overflow:hidden;isolation:isolate}
+  /* only the section's own background canvas fills the section — inner canvases
+     fill their positioned wrapper, and sparklines stay in normal flow */
+  .sec > canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+  .stage canvas,.gauge canvas,.wave canvas{position:absolute;inset:0;width:100%;height:100%}
+  canvas.spark{position:static;display:block;width:100%;height:34px}
+  .inner{position:relative;z-index:2;width:100%;max-width:1280px;margin:0 auto}
+  .badge{position:absolute;top:22px;left:40px;z-index:3;font-family:var(--mono);font-size:10px;
+    letter-spacing:.24em;text-transform:uppercase;opacity:.5}
+  .num{font-variant-numeric:tabular-nums}
+  @media(max-width:720px){.sec{padding:60px 20px 92px}.badge{left:20px}}
+
+  /* ============ 1 · ORRERY ============ */
+  .orrery{--ink:#f4ecdc;--dim:#8d8672;--brass:#e8b75c;--line:rgba(232,183,92,.2);
+    background:radial-gradient(120% 90% at 50% 42%,#0b0a09 0%,#050505 62%,#020202 100%);color:var(--ink)}
+  .orrery .badge{color:var(--brass)}
+  .orrery .lay{display:grid;grid-template-columns:minmax(0,340px) 1fr;gap:56px;align-items:center}
+  .orrery h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,4.6vw,66px);line-height:1.02;
+    margin:0 0 20px;letter-spacing:-.015em;text-wrap:balance}
+  .orrery h1 em{font-style:italic;color:var(--brass)}
+  .orrery .lede{font-size:15px;line-height:1.62;color:#c9c1ad;max-width:38ch;margin:0 0 30px}
+  .orrery .rule{height:1px;background:linear-gradient(90deg,var(--brass),transparent);margin:26px 0}
+  .orrery dl{display:grid;grid-template-columns:1fr 1fr;gap:22px 26px;margin:0}
+  .orrery dt{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:5px}
+  .orrery dd{margin:0;font-family:var(--serif);font-size:30px;line-height:1;color:var(--ink)}
+  .orrery dd small{font-size:12px;font-family:var(--mono);color:var(--brass);margin-left:5px}
+  .orrery .stage{position:relative;aspect-ratio:1;max-height:74vh;margin-inline:auto;width:100%}
+  @media(max-width:900px){.orrery .lay{grid-template-columns:1fr;gap:26px}.orrery .stage{max-height:46vh}}
+
+  /* ============ 2 · COMMAND DECK ============ */
+  .deck{--amber:#f0b429;--live:#7fd4e8;--panel:rgba(255,255,255,.028);--edge:rgba(240,180,41,.22);
+    background:#07080b;color:#e7e3d8}
+  .deck .badge{color:var(--amber)}
+  .deck .grid{display:grid;grid-template-columns:1fr 1.35fr 1fr;gap:16px;align-items:stretch}
+  .deck .card{border:1px solid var(--edge);background:var(--panel);border-radius:3px;padding:16px 18px;
+    display:flex;flex-direction:column;gap:12px;min-width:0}
+  .deck .k{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(231,227,216,.45)}
+  .deck .big{font-family:var(--mono);font-size:clamp(30px,3.6vw,46px);color:var(--amber);line-height:1}
+  .deck .gauge{display:grid;place-items:center;position:relative;aspect-ratio:1;width:100%}
+  .deck .gv{position:absolute;text-align:center}
+  .deck .gv b{display:block;font-family:var(--mono);font-size:clamp(40px,5.4vw,72px);color:#fff;line-height:1;letter-spacing:-.02em}
+  .deck .gv span{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--amber)}
+  .deck .rows{display:flex;flex-direction:column;gap:9px}
+  .deck .row{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11.5px}
+  .deck .row i{width:5px;height:5px;border-radius:50%;background:var(--live);flex:0 0 auto;box-shadow:0 0 8px var(--live)}
+  .deck .row b{margin-left:auto;color:var(--amber)}
+  .deck .bar{height:2px;background:rgba(255,255,255,.09);position:relative;overflow:hidden}
+  .deck .bar span{position:absolute;inset:0 auto 0 0;background:var(--amber)}
+  .deck .strip{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-top:16px}
+  .deck .fac{border:1px solid rgba(255,255,255,.08);padding:10px;border-radius:2px}
+  .deck .fac em{display:block;font-style:normal;font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:rgba(231,227,216,.42);margin-bottom:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .deck .fac b{font-family:var(--mono);font-size:15px;color:#fff}
+  @media(max-width:980px){.deck .grid{grid-template-columns:1fr}.deck .strip{grid-template-columns:repeat(4,1fr)}}
+
+  /* ============ 3 · HELIX ============ */
+  .helix{--cy:#35d6f5;--bl:#4f7bff;--pale:#dbf3fb;background:#04070e;color:var(--pale)}
+  .helix .badge{color:var(--cy)}
+  .helix .lay{display:grid;grid-template-columns:1fr 300px 1fr;gap:34px;align-items:center}
+  .helix h2{font-size:clamp(26px,2.9vw,40px);font-weight:600;letter-spacing:-.02em;line-height:1.1;margin:0 0 14px;text-wrap:balance}
+  .helix p{color:#93b4c6;font-size:14px;line-height:1.6;margin:0}
+  .helix .stage{position:relative;height:min(70vh,620px)}
+  .helix .panel{border-left:1px solid rgba(53,214,245,.28);padding-left:16px;margin-bottom:22px}
+  .helix .panel h3{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--cy);margin:0 0 8px;font-weight:400}
+  .helix .panel .v{font-family:var(--mono);font-size:26px;color:#fff;line-height:1}
+  .helix .panel .s{font-size:12px;color:#7f9fb2;margin-top:5px}
+  .helix .ev{display:flex;gap:9px;align-items:baseline;font-family:var(--mono);font-size:11.5px;color:#a8c6d6;padding:5px 0;
+    border-bottom:1px solid rgba(255,255,255,.05)}
+  .helix .ev u{text-decoration:none;color:var(--cy);flex:0 0 40px}
+  @media(max-width:980px){.helix .lay{grid-template-columns:1fr}.helix .stage{height:40vh;order:-1}}
+
+  /* ============ 4 · FLUX ============ */
+  .flux{--vi:#c77dff;--pk:#ff8ad4;--pale:#efe2ff;background:#0d0616;color:var(--pale)}
+  .flux .badge{color:var(--vi)}
+  .flux .wave{position:relative;height:min(38vh,300px);margin:-10px -40px 26px}
+  .flux .wave canvas{position:absolute;inset:0}
+  .flux h2{font-size:clamp(26px,3vw,42px);font-weight:650;letter-spacing:-.025em;margin:0 0 8px;text-wrap:balance}
+  .flux .sub{color:#b79ad0;font-size:14px;margin:0 0 24px}
+  .flux .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .flux .c{border:1px solid rgba(199,125,255,.2);background:linear-gradient(160deg,rgba(199,125,255,.09),rgba(199,125,255,.01));
+    border-radius:10px;padding:15px 16px}
+  .flux .c h4{margin:0 0 10px;font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#b79ad0;font-weight:400}
+  .flux .c .v{font-size:27px;font-weight:650;letter-spacing:-.02em;line-height:1}
+  .flux .c .d{font-family:var(--mono);font-size:11px;margin-top:6px;color:var(--pk)}
+  .flux .spark{height:34px;margin-top:10px}
+  @media(max-width:900px){.flux .cards{grid-template-columns:repeat(2,1fr)}.flux .wave{margin-inline:-20px}}
+
+  /* ============ 5 · AURORA ============ */
+  .aurora{background:#03040a;color:#eef2f8;justify-content:flex-end}
+  .aurora .badge{color:#7ee8d0}
+  .aurora h2{font-size:clamp(44px,8.4vw,132px);line-height:.92;letter-spacing:-.045em;font-weight:680;margin:0 0 22px;
+    text-wrap:balance;max-width:15ch}
+  .aurora h2 span{background:linear-gradient(96deg,#7ee8d0,#8fb6ff 45%,#c99cff);-webkit-background-clip:text;
+    background-clip:text;color:transparent}
+  .aurora .row{display:flex;flex-wrap:wrap;gap:38px;align-items:flex-end;justify-content:space-between;
+    border-top:1px solid rgba(255,255,255,.13);padding-top:22px}
+  .aurora .row p{margin:0;max-width:44ch;color:#9fb0c4;font-size:15px;line-height:1.6}
+  .aurora .stats{display:flex;gap:34px}
+  .aurora .stats div{text-align:right}
+  .aurora .stats b{display:block;font-family:var(--mono);font-size:26px;color:#fff;line-height:1}
+  .aurora .stats em{font-style:normal;font-family:var(--mono);font-size:9px;letter-spacing:.18em;
+    text-transform:uppercase;color:#7d8ea3}
+
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="switch" id="switch">
+  <a href="#c1" class="on">01 Orrery</a>
+  <a href="#c2">02 Deck</a>
+  <a href="#c3">03 Helix</a>
+  <a href="#c4">04 Flux</a>
+  <a href="#c5">05 Aurora</a>
+</nav>
+
+<!-- ============ 1 · ORRERY ============ -->
+<section class="sec orrery" id="c1">
+  <div class="badge">Concept 01 — Orrery</div>
+  <div class="inner">
+    <div class="lay">
+      <div>
+        <h1>Eight facilities.<br>One <em>system</em>.</h1>
+        <p class="lede">Every unit, call, and payment moves through a single operating core — observed continuously, priced deliberately, acted on before it becomes a problem.</p>
+        <div class="rule"></div>
+        <dl>
+          <div><dt>Units under management</dt><dd class="num">1,088</dd></div>
+          <div><dt>Portfolio occupancy</dt><dd class="num">91<small>%</small></dd></div>
+          <div><dt>Facilities</dt><dd class="num">8<small>+1</small></dd></div>
+          <div><dt>Decisions / day</dt><dd class="num">140<small>AI</small></dd></div>
+        </dl>
+      </div>
+      <div class="stage"><canvas data-fx="orrery"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 · COMMAND DECK ============ -->
+<section class="sec deck" id="c2">
+  <div class="badge">Concept 02 — Command Deck</div>
+  <canvas data-fx="stars"></canvas>
+  <div class="inner">
+    <div class="grid">
+      <div class="card">
+        <div class="k">Live activity</div>
+        <div class="rows">
+          <div class="row"><i></i>Inbound call <b>Cedar Park</b></div>
+          <div class="row"><i></i>Payment received <b>$124</b></div>
+          <div class="row"><i></i>Unit reserved <b>C-14</b></div>
+          <div class="row"><i></i>Abandoned cart <b>10×15</b></div>
+          <div class="row"><i></i>Web visit <b>Riverside</b></div>
+        </div>
+        <div class="k" style="margin-top:6px">Response time</div>
+        <div class="bar"><span style="width:88%"></span></div>
+        <div class="row" style="font-size:10.5px;opacity:.7">Median first reply <b>0:04</b></div>
+      </div>
+
+      <div class="card" style="align-items:center;justify-content:center">
+        <div class="gauge">
+          <canvas data-fx="gauge"></canvas>
+          <div class="gv"><b class="num">91<span style="font-size:.4em">%</span></b><span>Occupancy</span></div>
+        </div>
+        <div class="k">Portfolio · 8 facilities · 1,088 units</div>
+      </div>
+
+      <div class="card">
+        <div class="k">AI triage</div>
+        <div class="big num">4</div>
+        <div class="row" style="opacity:.75">Resolved by AI today <b>27</b></div>
+        <div class="k" style="margin-top:8px">Requires on-site</div>
+        <div class="big num" style="color:#e7e3d8">7</div>
+        <div class="row" style="opacity:.75">Avg close time <b>3.2h</b></div>
+      </div>
+    </div>
+
+    <div class="strip">
+      <div class="fac"><em>Cedar Park</em><b class="num">96%</b></div>
+      <div class="fac"><em>Cedar Pk S.</em><b class="num">89%</b></div>
+      <div class="fac"><em>Riverside</em><b class="num">94%</b></div>
+      <div class="fac"><em>Fort Hill</em><b class="num">78%</b></div>
+      <div class="fac"><em>Lakeview M.</em><b class="num">92%</b></div>
+      <div class="fac"><em>Lakeview S.</em><b class="num">85%</b></div>
+      <div class="fac"><em>Lakeview N.</em><b class="num">88%</b></div>
+      <div class="fac"><em>Lakeview E.</em><b class="num">83%</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 · HELIX ============ -->
+<section class="sec helix" id="c3">
+  <div class="badge">Concept 03 — Helix</div>
+  <div class="inner">
+    <div class="lay">
+      <div>
+        <h2>The operating system, strand by strand.</h2>
+        <p>Two rails — the physical facility and the digital record — bound together by every event that touches a unit. Nothing moves on one side without the other knowing.</p>
+        <div style="margin-top:24px">
+          <div class="panel"><h3>Sync integrity</h3><div class="v num">100%</div><div class="s">Records reconciled overnight, every night</div></div>
+          <div class="panel"><h3>Signal latency</h3><div class="v num">1.2s</div><div class="s">Call to hub to command center</div></div>
+        </div>
+      </div>
+
+      <div class="stage"><canvas data-fx="helix"></canvas></div>
+
+      <div>
+        <div class="panel" style="margin-bottom:14px"><h3>Event stream</h3></div>
+        <div class="ev"><u>16:52</u><span>Inbound call — Riverside</span></div>
+        <div class="ev"><u>16:51</u><span>Autopay cleared — $95</span></div>
+        <div class="ev"><u>16:49</u><span>AI drafted late notice</span></div>
+        <div class="ev"><u>16:47</u><span>Gate opened — B-12</span></div>
+        <div class="ev"><u>16:44</u><span>Reservation — 10×20</span></div>
+        <div class="ev"><u>16:41</u><span>Web visit — Fort Hill</span></div>
+        <div class="ev"><u>16:38</u><span>Move-out photo received</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 · FLUX ============ -->
+<section class="sec flux" id="c4">
+  <div class="badge">Concept 04 — Flux</div>
+  <div class="inner">
+    <div class="wave"><canvas data-fx="wave"></canvas></div>
+    <h2>Demand has a shape. We price to it.</h2>
+    <p class="sub">Occupancy, search traffic, and competitor movement resolved into one surface — updated continuously, not quarterly.</p>
+    <div class="cards">
+      <div class="c"><h4>Revenue / unit</h4><div class="v num">$103</div><div class="d">▲ 6.2% vs. LY</div><canvas class="spark" data-fx="spark" data-seed="1"></canvas></div>
+      <div class="c"><h4>Occupancy</h4><div class="v num">91.4%</div><div class="d">▲ 1.8 pts</div><canvas class="spark" data-fx="spark" data-seed="2"></canvas></div>
+      <div class="c"><h4>Lead → move-in</h4><div class="v num">21%</div><div class="d">▲ 3.1 pts</div><canvas class="spark" data-fx="spark" data-seed="3"></canvas></div>
+      <div class="c"><h4>Delinquency</h4><div class="v num">2.4%</div><div class="d" style="color:#7ee8d0">▼ 0.9 pts</div><canvas class="spark" data-fx="spark" data-seed="4"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 · AURORA ============ -->
+<section class="sec aurora" id="c5">
+  <div class="badge">Concept 05 — Aurora</div>
+  <canvas data-fx="aurora"></canvas>
+  <div class="inner">
+    <h2>We run storage like <span>software</span>.</h2>
+    <div class="row">
+      <p>Eight facilities across Kansas, operated from a single live system. The work that can be automated is. The work that needs a person gets one — dispatched with everything already known.</p>
+      <div class="stats">
+        <div><b class="num">1,088</b><em>Units</em></div>
+        <div><b class="num">8</b><em>Facilities</em></div>
+        <div><b class="num">24/7</b><em>Coverage</em></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  'use strict';
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  function fit(c){
+    var d=Math.min(devicePixelRatio||1,2),r=c.getBoundingClientRect();
+    var w=Math.max(1,r.width|0),h=Math.max(1,r.height|0);
+    if(c.width!==w*d||c.height!==h*d){c.width=w*d;c.height=h*d;}
+    var x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);return{x:x,w:w,h:h};
+  }
+
+  /* ---------- 01 ORRERY: brass orbital chart ---------- */
+  var ORB=[{r:.20,s:.55,sz:3.4,n:'Cedar Park'},{r:.29,s:-.38,sz:2.4,n:'Cedar Park S'},
+           {r:.38,s:.29,sz:3.0,n:'Riverside'},{r:.47,s:-.22,sz:2.0,n:'Fort Hill'},
+           {r:.57,s:.17,sz:2.6,n:'Lakeview M'},{r:.66,s:-.13,sz:1.9,n:'Lakeview S'},
+           {r:.76,s:.10,sz:1.7,n:'Lakeview N'},{r:.86,s:-.08,sz:1.8,n:'Lakeview E'}];
+  function orrery(c,t){
+    var f=fit(c),x=f.x,w=f.w,h=f.h,cx=w/2,cy=h/2,R=Math.min(w,h)/2;
+    x.clearRect(0,0,w,h);
+    // faint star salt
+    x.fillStyle='rgba(232,183,92,.16)';
+    for(var i=0;i<70;i++){var a=i*2.399,rr=R*(.12+((i*37)%100)/100*.92);
+      x.fillRect(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr,1,1);}
+    // graticule
+    x.strokeStyle='rgba(232,183,92,.10)';x.lineWidth=1;
+    x.beginPath();x.moveTo(cx-R,cy);x.lineTo(cx+R,cy);x.moveTo(cx,cy-R);x.lineTo(cx,cy+R);x.stroke();
+    // orbits + bodies
+    ORB.forEach(function(o,i){
+      var rr=R*o.r;
+      x.strokeStyle='rgba(232,183,92,'+(0.30-i*0.021)+')';x.lineWidth=1;
+      x.beginPath();x.ellipse(cx,cy,rr,rr*0.42,0,0,Math.PI*2);x.stroke();
+      var a=t*o.s*0.16+i*1.1;
+      var px=cx+Math.cos(a)*rr,py=cy+Math.sin(a)*rr*0.42;
+      var g=x.createRadialGradient(px,py,0,px,py,o.sz*6);
+      g.addColorStop(0,'rgba(255,226,160,.95)');g.addColorStop(1,'rgba(232,183,92,0)');
+      x.fillStyle=g;x.beginPath();x.arc(px,py,o.sz*6,0,Math.PI*2);x.fill();
+      x.fillStyle='#ffeaba';x.beginPath();x.arc(px,py,o.sz,0,Math.PI*2);x.fill();
+    });
+    // core
+    var cg=x.createRadialGradient(cx,cy,0,cx,cy,R*.2);
+    cg.addColorStop(0,'rgba(255,240,205,1)');cg.addColorStop(.35,'rgba(232,183,92,.55)');cg.addColorStop(1,'rgba(232,183,92,0)');
+    x.fillStyle=cg;x.beginPath();x.arc(cx,cy,R*.2,0,Math.PI*2);x.fill();
+    x.strokeStyle='rgba(232,183,92,.5)';x.lineWidth=1;
+    x.beginPath();x.arc(cx,cy,R*.085,0,Math.PI*2);x.stroke();
+  }
+
+  /* ---------- 02 DECK: star wash + radial gauge ---------- */
+  function stars(c,t){
+    var f=fit(c),x=f.x,w=f.w,h=f.h;x.clearRect(0,0,w,h);
+    for(var i=0;i<130;i++){
+      var sx=((i*7919)%1000)/1000*w, sy=((i*104729)%1000)/1000*h;
+      var tw=.25+.75*Math.abs(Math.sin(t*.6+i));
+      x.fillStyle='rgba(255,255,255,'+(tw*.30)+')';x.fillRect(sx,sy,1,1);
+    }
+  }
+  function gauge(c,t){
+    var f=fit(c),x=f.x,w=f.w,h=f.h,cx=w/2,cy=h/2,R=Math.min(w,h)/2-6;
+    x.clearRect(0,0,w,h);
+    // tick ring
+    for(var i=0;i<96;i++){
+      var a=(i/96)*Math.PI*2-Math.PI/2, maj=i%8===0;
+      var r1=R*(maj?.80:.86), r2=R*.93;
+      x.strokeStyle=maj?'rgba(240,180,41,.75)':'rgba(240,180,41,.24)';
+      x.lineWidth=maj?1.6:1;
+      x.beginPath();x.moveTo(cx+Math.cos(a)*r1,cy+Math.sin(a)*r1);x.lineTo(cx+Math.cos(a)*r2,cy+Math.sin(a)*r2);x.stroke();
+    }
+    // occupancy arc
+    var pct=.914,end=-Math.PI/2+Math.PI*2*pct;
+    x.strokeStyle='rgba(240,180,41,.18)';x.lineWidth=7;
+    x.beginPath();x.arc(cx,cy,R*.68,0,Math.PI*2);x.stroke();
+    var grd=x.createLinearGradient(cx-R,cy-R,cx+R,cy+R);
+    grd.addColorStop(0,'#f0b429');grd.addColorStop(1,'#ffe08a');
+    x.strokeStyle=grd;x.lineWidth=7;x.lineCap='round';
+    x.beginPath();x.arc(cx,cy,R*.68,-Math.PI/2,end);x.stroke();
+    // sweep
+    var sa=-Math.PI/2+(t*.55)%(Math.PI*2);
+    var sg=x.createLinearGradient(cx,cy,cx+Math.cos(sa)*R,cy+Math.sin(sa)*R);
+    sg.addColorStop(0,'rgba(127,212,232,.32)');sg.addColorStop(1,'rgba(127,212,232,0)');
+    x.strokeStyle=sg;x.lineWidth=2;
+    x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+Math.cos(sa)*R*.94,cy+Math.sin(sa)*R*.94);x.stroke();
+    // inner hairlines
+    x.strokeStyle='rgba(255,255,255,.07)';x.lineWidth=1;
+    [.40,.52].forEach(function(k){x.beginPath();x.arc(cx,cy,R*k,0,Math.PI*2);x.stroke();});
+  }
+
+  /* ---------- 03 HELIX: two rails + event rungs ---------- */
+  function helix(c,t){
+    var f=fit(c),x=f.x,w=f.w,h=f.h,cx=w/2,A=Math.min(w*.34,86),N=78;
+    x.clearRect(0,0,w,h);
+    var A1=[],B1=[];
+    for(var i=0;i<=N;i++){
+      var p=i/N, y=p*h, a=p*Math.PI*4.2 - t*.5;
+      A1.push([cx+Math.sin(a)*A, y, Math.cos(a)]);
+      B1.push([cx+Math.sin(a+Math.PI)*A, y, Math.cos(a+Math.PI)]);
+    }
+    // rungs
+    for(var i=0;i<=N;i+=3){
+      var a=A1[i],b=B1[i],d=(a[2]+1)/2;
+      x.strokeStyle='rgba(79,123,255,'+(0.08+d*0.30)+')';x.lineWidth=1;
+      x.beginPath();x.moveTo(a[0],a[1]);x.lineTo(b[0],b[1]);x.stroke();
+    }
+    // rails
+    [[A1,'53,214,245'],[B1,'79,123,255']].forEach(function(pair){
+      var pts=pair[0];
+      x.strokeStyle='rgba('+pair[1]+',.85)';x.lineWidth=2;
+      x.beginPath();pts.forEach(function(p,i){i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]);});x.stroke();
+      pts.forEach(function(p,i){
+        if(i%3)return;var d=(p[2]+1)/2;
+        x.fillStyle='rgba('+pair[1]+','+(0.25+d*0.75)+')';
+        x.beginPath();x.arc(p[0],p[1],1.1+d*2.4,0,Math.PI*2);x.fill();
+      });
+    });
+    // travelling pulse
+    var pp=(t*.19)%1, py=pp*h, idx=Math.round(pp*N), pt=A1[Math.max(0,Math.min(N,idx))];
+    var g=x.createRadialGradient(pt[0],py,0,pt[0],py,30);
+    g.addColorStop(0,'rgba(255,255,255,.9)');g.addColorStop(1,'rgba(53,214,245,0)');
+    x.fillStyle=g;x.beginPath();x.arc(pt[0],py,30,0,Math.PI*2);x.fill();
+  }
+
+  /* ---------- 04 FLUX: layered wave mesh ---------- */
+  function wave(c,t){
+    var f=fit(c),x=f.x,w=f.w,h=f.h;x.clearRect(0,0,w,h);
+    for(var L=0;L<5;L++){
+      var off=L*0.7, amp=h*(0.13+L*0.028), base=h*(0.42+L*0.10);
+      x.beginPath();
+      for(var i=0;i<=w;i+=6){
+        var p=i/w;
+        var y=base+Math.sin(p*5.4+t*.5+off)*amp*Math.sin(p*Math.PI)
+                  +Math.sin(p*11+t*.32+off)*amp*.26;
+        i?x.lineTo(i,y):x.moveTo(i,y);
+      }
+      var g=x.createLinearGradient(0,0,w,0);
+      g.addColorStop(0,'rgba(199,125,255,0)');
+      g.addColorStop(.5,'rgba('+(199+L*8)+','+(125-L*6)+',255,'+(0.62-L*0.09)+')');
+      g.addColorStop(1,'rgba(255,138,212,0)');
+      x.strokeStyle=g;x.lineWidth=1.4;x.stroke();
+    }
+    // particle salt along the crest
+    for(var i=0;i<80;i++){
+      var p=((i*37)%100)/100, px=p*w;
+      var py=h*0.42+Math.sin(p*5.4+t*.5)*h*0.13*Math.sin(p*Math.PI);
+      x.fillStyle='rgba(240,215,255,'+(0.12+0.5*Math.abs(Math.sin(t+i)))+')';
+      x.fillRect(px,py+((i*13)%18)-9,1.2,1.2);
+    }
+  }
+  function spark(c,t){
+    var f=fit(c),x=f.x,w=f.w,h=f.h,seed=+(c.dataset.seed||1);x.clearRect(0,0,w,h);
+    var pts=[];for(var i=0;i<=26;i++){
+      var v=Math.sin(i*.55+seed*1.7)*.5+Math.sin(i*.23+seed)*.35+Math.sin(t*.3+i*.1)*.09;
+      pts.push([i/26*w, h*.5 - v*h*.34]);
+    }
+    x.beginPath();pts.forEach(function(p,i){i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]);});
+    x.lineTo(w,h);x.lineTo(0,h);x.closePath();
+    var g=x.createLinearGradient(0,0,0,h);
+    g.addColorStop(0,'rgba(199,125,255,.34)');g.addColorStop(1,'rgba(199,125,255,0)');
+    x.fillStyle=g;x.fill();
+    x.beginPath();pts.forEach(function(p,i){i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]);});
+    x.strokeStyle='#e0b6ff';x.lineWidth=1.4;x.stroke();
+    var last=pts[pts.length-1];
+    x.fillStyle='#fff';x.beginPath();x.arc(last[0]-1,last[1],2,0,Math.PI*2);x.fill();
+  }
+
+  /* ---------- 05 AURORA: drifting light field ---------- */
+  function aurora(c,t){
+    var f=fit(c),x=f.x,w=f.w,h=f.h;x.clearRect(0,0,w,h);
+    var bands=[['126,232,208',.30,.55],['143,182,255',.42,.42],['201,156,255',.56,.34]];
+    bands.forEach(function(b,i){
+      for(var k=0;k<3;k++){
+        var yy=h*b[1]+Math.sin(t*.16+i*1.3+k)*h*.08+k*16;
+        var g=x.createRadialGradient(w*(.28+.2*i+Math.sin(t*.1+i)*.06),yy,0,
+                                     w*(.28+.2*i),yy,Math.max(w,h)*.42);
+        g.addColorStop(0,'rgba('+b[0]+','+(b[2]*0.11)+')');
+        g.addColorStop(1,'rgba('+b[0]+',0)');
+        x.fillStyle=g;x.fillRect(0,0,w,h);
+      }
+    });
+    for(var i=0;i<90;i++){
+      var sx=((i*7919)%1000)/1000*w, sy=((i*7907)%1000)/1000*h*.8;
+      x.fillStyle='rgba(255,255,255,'+(0.12+0.4*Math.abs(Math.sin(t*.5+i)))+')';
+      x.fillRect(sx,sy,1,1);
+    }
+  }
+
+  var FX={orrery:orrery,stars:stars,gauge:gauge,helix:helix,wave:wave,spark:spark,aurora:aurora};
+
+  // only animate what's on screen
+  var live=new Set();
+  function paint(c,t){var fn=FX[c.dataset.fx];if(fn)fn(c,t);}
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      var s=e.target;
+      s.querySelectorAll('canvas[data-fx]').forEach(function(c){
+        if(e.isIntersecting){ if(!live.has(c))paint(c,0); live.add(c); }   // paint once up front,
+        else live.delete(c);                                              // so it renders even if
+      });                                                                 // rAF is throttled
+    });
+  },{threshold:.05});
+  document.querySelectorAll('.sec').forEach(function(s){io.observe(s);});
+
+  // Paint everything once up front rather than waiting on IntersectionObserver.
+  // IO (and rAF) don't fire while the page isn't compositing — in a background
+  // tab or an off-screen preview pane — which would otherwise leave every
+  // canvas blank instead of merely un-animated.
+  function paintAll(){document.querySelectorAll('canvas[data-fx]').forEach(function(c){paint(c,0);});}
+  paintAll();
+  addEventListener('load',paintAll);
+
+  var t0=null;
+  function loop(ts){
+    if(t0===null)t0=ts; var t=(ts-t0)/1000;
+    live.forEach(function(c){ paint(c,reduce?0:t); });
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+  addEventListener('resize',function(){ live.forEach(function(c){ paint(c,0); }); });
+
+  // switcher highlight
+  var links=[].slice.call(document.querySelectorAll('#switch a'));
+  var so=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(!e.isIntersecting)return;
+      links.forEach(function(a){a.classList.toggle('on', a.getAttribute('href')==='#'+e.target.id);});
+    });
+  },{threshold:.5});
+  document.querySelectorAll('.sec').forEach(function(s){so.observe(s);});
+})();
+</script>
+</body>
+</html>

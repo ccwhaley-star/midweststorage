@@ -57,11 +57,11 @@
   --signal-bright: #f2cf7e;
   --signal-soft: rgba(232,183,92,.15);
   --live: #5BD08A;
-  --limestone: #E9E5DC;
-  --lime-ink: #22201C;
-  --lime-mute: #6E675B;
-  --lime-line: #D5CFC2;
-  --lime-card: #F3F0E9;
+  --limestone: #14120d;
+  --lime-ink: #ECE9E3;
+  --lime-mute: #9c9384;
+  --lime-line: rgba(232,183,92,.16);
+  --lime-card: #1c1911;
   --maxw: 1140px;
   --ease: cubic-bezier(.22,.61,.36,1);
 }
@@ -906,7 +906,7 @@ ul { list-style: none; }
   width: 20px;
   height: 20px;
   flex-shrink: 0;
-  stroke: var(--accent);
+  stroke: var(--ink);
   fill: none;
   stroke-width: 2;
 }
@@ -1852,6 +1852,8 @@ body.nav-open {
 .lime {
   background: var(--limestone);
   color: var(--lime-ink);
+  border-top: 1px solid rgba(232,183,92,.12);
+  border-bottom: 1px solid rgba(232,183,92,.12);
   position: relative;
   z-index: 1;
 }
