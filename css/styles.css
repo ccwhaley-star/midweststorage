@@ -1811,6 +1811,9 @@ body.nav-open {
   object-fit: cover;
   transform: scale(1.2);
 }
+/* Chris's headshot is a full-frame photo (no baked-in circle like Mona's),
+   so ease the crop back to show his full head instead of a tight zoom */
+.team-photo[src*="Chris"] { transform: scale(1); }
 .mono-avatar {
   width: 64px;
   height: 64px;
