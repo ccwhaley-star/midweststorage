@@ -268,7 +268,7 @@ ul { list-style: none; }
   display: flex;
   align-items: center;
   background-color: #1a1a1a;
-  background-image: url('../img/orange v3.jpg');
+  background-image: url('../img/hero-bg.webp');
   background-size: cover;
   background-position: center;
   overflow: hidden;
@@ -1497,7 +1497,7 @@ body.nav-open {
    ============================================ */
 
 .v3-lower {
-  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-family: var(--font);
   position: relative;
   z-index: 1;
 }
