@@ -2061,7 +2061,7 @@ body.nav-open {
 /* the console is a full-screen dashboard — let this section break out of the
    site's 1140px content width and give the iframe real height so it doesn't
    render as a small cramped box */
-#console .wrap { max-width: min(1280px, 94vw); }
+#console .wrap { max-width: min(1580px, 94vw); }
 .console-iframe {
   display: block;
   width: 100%;
