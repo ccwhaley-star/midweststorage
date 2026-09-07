@@ -273,6 +273,9 @@ ul { list-style: none; }
   background-position: center;
   overflow: hidden;
 }
+@media (max-width: 768px) {
+  .hero { background-image: url('../img/hero-bg-960.webp'); }
+}
 
 .hero-overlay {
   position: absolute;
