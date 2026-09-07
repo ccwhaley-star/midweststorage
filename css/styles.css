@@ -870,7 +870,7 @@ ul { list-style: none; }
   margin-bottom: 40px;
 }
 
-.footer h4 {
+.footer h3 {
   font-size: 1rem;
   font-weight: 600;
   color: var(--dark);
@@ -885,7 +885,7 @@ ul { list-style: none; }
 
 .footer-links a {
   font-size: 0.9rem;
-  color: var(--gray);
+  color: #5f6368;
   transition: color var(--transition);
 }
 
@@ -899,7 +899,7 @@ ul { list-style: none; }
   gap: 12px;
   margin-bottom: 16px;
   font-size: 0.9rem;
-  color: var(--gray);
+  color: #5f6368;
 }
 
 .footer-contact-item svg {
@@ -912,7 +912,7 @@ ul { list-style: none; }
 }
 
 .footer-contact-item a {
-  color: var(--gray);
+  color: #5f6368;
   transition: color var(--transition);
 }
 
@@ -1720,7 +1720,7 @@ body.nav-open {
   color: var(--mute-2);
   letter-spacing: .1em;
 }
-.mod h4 {
+.mod h3 {
   font-family: "Archivo", sans-serif;
   font-weight: 700;
   font-stretch: 110%;
@@ -1830,7 +1830,7 @@ body.nav-open {
   color: var(--signal);
   letter-spacing: .02em;
 }
-.person h4 {
+.person h3 {
   font-family: "Archivo", sans-serif;
   font-weight: 700;
   font-stretch: 110%;
