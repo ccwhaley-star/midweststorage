@@ -17,7 +17,7 @@
 | **Website** | https://midweststorage.solutions |
 | **Main phone** | (620) 901-8450 |
 | **Main email** | info@midweststorage.solutions |
-| **LinkedIn** | https://www.linkedin.com/company/midwest-storage-solutions |
+| **LinkedIn** | https://www.linkedin.com/company/midweststoragesolutions |
 | **Leadership** | Chris Whaley — Co-Founder & CEO (finance, acquisitions, technology) · Mona Whaley — Co-Founder & COO (operations, tenant experience, on-the-ground execution) |
 | **Model** | 100% remotely managed, 24/7 self-service. No one behind a counter. |
 | **Scale (as marketed)** | 1,092 units under management · 4.7★ across 300+ Google reviews · ~95% avg occupancy |
