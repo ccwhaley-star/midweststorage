@@ -195,13 +195,19 @@ ul { list-style: none; }
 }
 
 .logo-mark {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 104px;
+  height: 104px;
   border: 1px solid rgba(255,255,255,0.85);
-  padding: 11px 16px;
   font-weight: 400;
   font-size: var(--fs-xs);
-  letter-spacing: 0.24em;
-  line-height: 1.7;
+  /* text-indent mirrors letter-spacing so each line's trailing
+     tracking space doesn't shift the block off optical center */
+  letter-spacing: 0.14em;
+  text-indent: 0.14em;
+  line-height: 1.5;
   text-transform: uppercase;
   text-align: center;
   color: var(--white);
@@ -1205,8 +1211,8 @@ body.nav-open {
   }
 
   .logo .logo-mark {
-    font-size: var(--fs-xs);
-    padding: 9px 13px;
+    width: 96px;
+    height: 96px;
   }
 
   .nav-links {
