@@ -191,29 +191,9 @@ ul { list-style: none; }
 }
 
 .logo-img {
-  height: 36px;
-  width: auto;
-  color: var(--white);
-}
-
-.logo-mark {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   width: 104px;
-  height: 104px;
-  border: 1px solid rgba(255,255,255,0.85);
-  font-weight: 400;
-  font-size: var(--fs-xs);
-  /* text-indent mirrors letter-spacing so each line's trailing
-     tracking space doesn't shift the block off optical center */
-  letter-spacing: 0.14em;
-  text-indent: 0.14em;
-  line-height: 1.5;
-  text-transform: uppercase;
-  text-align: center;
-  color: var(--white);
-  white-space: nowrap;
+  height: auto;
 }
 
 .header-right {
@@ -1210,12 +1190,7 @@ body.nav-open {
   }
 
   .logo .logo-img {
-    height: 28px;
-  }
-
-  .logo .logo-mark {
     width: 96px;
-    height: 96px;
   }
 
   .nav-links {
