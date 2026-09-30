@@ -190,10 +190,20 @@ ul { list-style: none; }
   align-items: center;
 }
 
-.logo-img {
+.logo-mark {
+  /* Plate lockup: sides inset ~15% of width, cap-top/baseline inset a
+     touch more (logo "B"). Padding is in em so the plate scales with
+     font-size alone. */
   display: block;
-  width: 104px;
-  height: auto;
+  border: 1.5px solid var(--white);
+  padding: 0.885em 0.81em;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.42;
+  letter-spacing: 0.01em;
+  text-align: center;
+  color: var(--white);
+  white-space: nowrap;
 }
 
 .header-right {
@@ -1189,8 +1199,8 @@ body.nav-open {
     order: 1;
   }
 
-  .logo .logo-img {
-    width: 96px;
+  .logo .logo-mark {
+    font-size: 12px;
   }
 
   .nav-links {
