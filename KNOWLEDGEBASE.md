@@ -37,13 +37,13 @@
 - **Phone:** (620) 662-7336
 - **Location A:** 2511 E 17th Ave, Hutchinson, KS 67501
 - **Location B:** 712 N Walnut St, South Hutchinson, KS 67505
-- **Discounts advertised:** 10% military
+- **Discounts advertised:** 15% military and first responder
 - **Notes:** Two locations under one brand. 24/7 cameras at both, fenced & gated.
 
 ### Labette County Storage — `labettecountystorage.com`
 - **Phone:** (620) 778-8196
 - **Location:** 1830 S US-59, Parsons, KS 67357
-- **Discounts advertised:** 10% military
+- **Discounts advertised:** 15% military and first responder
 
 ### Bourbon County Storage — `bourboncountystorage.com`
 - **Phone:** (620) 644-0735
@@ -93,7 +93,7 @@
 - **⬜ Maintenance request handling** and vendor list per market
 - **⬜ After-hours / emergency escalation** (who to call, in what order)
 - **⬜ Customer complaint / refund** policy
-- **⬜ Discount policy** (military 10%, student 10% at Free State — confirm rules & stacking)
+- **⬜ Discount policy** (military and first responder 15% as of 2026-10-02, student 10% at Free State — confirm rules & stacking)
 
 ---
 
