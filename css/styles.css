@@ -192,7 +192,7 @@ ul { list-style: none; }
 
 .logo-img {
   display: block;
-  height: 56px;
+  height: 84px;
   width: auto;
 }
 
@@ -1190,7 +1190,7 @@ body.nav-open {
   }
 
   .logo .logo-img {
-    height: 48px;
+    height: 78px;
   }
 
   .nav-links {
