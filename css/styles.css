@@ -193,13 +193,13 @@ ul { list-style: none; }
 
 .logo-node {
   display: block;
-  height: 82px;
+  height: 62px;
   width: auto;
 }
 .logo-word {
   font-family: var(--font);
   font-weight: 700;
-  font-size: 25px;
+  font-size: 19px;
   line-height: 1.16;
   letter-spacing: .005em;
   color: var(--white);
@@ -1199,7 +1199,7 @@ body.nav-open {
   }
 
   .logo .logo-node {
-    height: 52px;
+    height: 44px;
   }
 
   /* phones: show the mark only — full wordmark + menu + CTA won't fit legibly */
