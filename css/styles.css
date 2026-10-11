@@ -188,12 +188,21 @@ ul { list-style: none; }
 .logo {
   display: flex;
   align-items: center;
+  gap: 20px;
 }
 
-.logo-img {
+.logo-node {
   display: block;
-  height: 96px;
+  height: 82px;
   width: auto;
+}
+.logo-word {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 1.16;
+  letter-spacing: .005em;
+  color: var(--white);
 }
 
 .header-right {
@@ -1189,8 +1198,13 @@ body.nav-open {
     order: 1;
   }
 
-  .logo .logo-img {
-    height: 78px;
+  .logo .logo-node {
+    height: 52px;
+  }
+
+  /* phones: show the mark only — full wordmark + menu + CTA won't fit legibly */
+  .logo-word {
+    display: none;
   }
 
   .nav-links {
