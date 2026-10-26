@@ -1193,7 +1193,14 @@ body.nav-open {
   }
 
   .nav-toggle {
-    order: 0;
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .header-right {
+    grid-column: 2;
+    grid-row: 1;
   }
 
   .logo {
@@ -1230,11 +1237,6 @@ body.nav-open {
 
   .header-right .social-link {
     display: none;
-  }
-
-  .header-right {
-    order: 2;
-    margin-left: auto;
   }
 
   .btn-contact {
