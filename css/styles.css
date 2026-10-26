@@ -1202,9 +1202,8 @@ body.nav-open {
     height: 40px;
   }
 
-  /* phones: show the mark only — full wordmark + menu + CTA won't fit legibly */
   .logo-word {
-    display: none;
+    font-size: 13px;
   }
 
   .nav-links {
