@@ -1185,22 +1185,19 @@ body.nav-open {
   }
 
   .header-inner {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
     align-items: center;
-    padding: 16px;
+    gap: 10px;
+    padding: 14px 16px;
   }
 
   .nav-toggle {
-    order: 3;
-    margin-left: 10px;
-    flex-shrink: 0;
+    order: 0;
   }
 
   .logo {
-    order: 1;
     gap: 10px;
-    flex: 1;
     min-width: 0;
   }
 
@@ -1217,10 +1214,9 @@ body.nav-open {
   .nav-links {
     display: none;
     flex-direction: column;
-    flex-basis: 100%;
+    grid-column: 1 / -1;
     padding: 16px 0;
     gap: 4px;
-    order: 4;
   }
 
   .nav-links.open {
