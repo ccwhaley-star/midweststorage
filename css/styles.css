@@ -188,18 +188,18 @@ ul { list-style: none; }
 .logo {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 12px;
 }
 
 .logo-node {
   display: block;
-  height: 54px;
+  height: 32px;
   width: auto;
 }
 .logo-word {
   font-family: var(--font);
   font-weight: 700;
-  font-size: 17px;
+  font-size: 15px;
   line-height: 1.16;
   letter-spacing: .005em;
   color: var(--white);
