@@ -20,7 +20,7 @@
 | **LinkedIn** | https://www.linkedin.com/company/midweststoragesolutions |
 | **Leadership** | Chris Whaley — Co-Founder & CEO (finance, acquisitions, technology) · Mona Whaley — Co-Founder & COO (operations, tenant experience, on-the-ground execution) |
 | **Model** | 100% remotely managed, 24/7 self-service. No one behind a counter. |
-| **Scale (as marketed)** | 1,092 units under management · 4.7★ across 300+ Google reviews · ~95% avg occupancy |
+| **Scale (as marketed)** | 1,408 units under management · 4.7★ across 300+ Google reviews · ~95% avg occupancy |
 
 **Three facility types we run:**
 1. **Climate-controlled** — year-round climate units in Midwest markets national operators skip.
