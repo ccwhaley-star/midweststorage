@@ -1,0 +1,59 @@
+[build]
+  publish = "."
+
+# The repo root is the publish folder; keep internal files off the web.
+# (Same pattern as meridian6/netlify.toml.)
+
+[[redirects]]
+  from = "/design-direction.html"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/design-concepts.html"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/reports/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/KNOWLEDGEBASE.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/*.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/server.js"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package-lock.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.claude/*"
+  to = "/404.html"
+  status = 404
+  force = true

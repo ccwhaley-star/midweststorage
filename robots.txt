@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /reports/
 
 Sitemap: https://midweststorage.solutions/sitemap.xml
